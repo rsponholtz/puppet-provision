@@ -1,0 +1,30 @@
+[sssd]
+ config_file_version = 2
+ domains = <%= @domain_fqdn %>
+ services = nss, pam, pac
+
+[nss]
+ nss_filter_groups = root
+ nss_filter_users = root
+ nss_entry_cache_timeout = 30
+ nss_enum_cache_timeout = 30
+
+ allowed_shells = /bin/bash
+ vetoed_shells = /bin/sh
+ shell_fallback = /bin/bash
+
+[domain/<%= @domain_fqdn %>]
+ id_provider = ad
+ auth_provider = ad
+ chpass_provider = ad
+ access_provider = ad
+ cache_credentials = true
+ default_shell = /bin/bash
+ ldap_id_mapping = False
+ enumerate = TRUE
+ cache_credentials = TRUE
+
+ dyndns_update = true
+ dyndns_refresh_interval = 43200
+ dyndns_update_ptr = true
+ dyndns_ttl = 3600

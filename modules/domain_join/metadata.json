@@ -1,0 +1,29 @@
+{
+  "name": "rnelson0-domain_join",
+  "version": "0.5.0",
+  "author": "rnelson0",
+  "summary": "Provides just enough configuration to join a Linux node to an Active Directory domain.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/rnelson0/puppet-domain_join",
+  "project_page": "https://github.com/rnelson0/puppet-domain_join",
+  "issues_url": "https://github.com/rnelson0/puppet-domain_join/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.0.0 < 5.0.0"}
+  ],
+  "data_provider": null,
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "7",
+        "6"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">=4.0.0"
+    }
+  ]
+}

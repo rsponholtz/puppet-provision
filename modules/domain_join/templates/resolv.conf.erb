@@ -1,0 +1,4 @@
+search <%= @domain_fqdn %><%- if @additional_search_domains then -%><%- @additional_search_domains.each do |search_domain| %> <%= search_domain %><%- end -%><%- end -%>
+<%- @ad_dns.each do |nameserver| %> 
+nameserver <%= nameserver %>
+<% end -%>

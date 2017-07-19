@@ -1,0 +1,3 @@
+/sbin/vgcreate vg_apps /dev/sdc
+/sbin/lvcreate -n lv_app1 --size 1G vg_apps
+mkfs.xfs /dev/vg_apps/lv_app1

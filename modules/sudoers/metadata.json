@@ -1,0 +1,40 @@
+{
+  "name": "sharumpe-sudoers",
+  "version": "1.0.0",
+  "author": "Tim McLaughlin <nospam@macwebb.com>",
+  "summary": "Sets up sudoers file, both global parameters and user rules.",
+  "license": "Apache-2.0",
+  "source": "UNKNOWN",
+  "project_page": "UNKNOWN",
+  "issues_url": null,
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "OpenSuse",
+      "operatingsystemrelease": [
+        "13.1"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04"
+      ]
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.0.0"},
+    {"name":"puppetlabs/concat","version_requirement":">= 1.0.4"}
+  ]
+}

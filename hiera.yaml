@@ -1,0 +1,7 @@
+:backends: yaml
+:yaml:
+  # on *nix:
+  :datadir: "/etc/puppet/code/environments/%{environment}/hieradata"
+:hierarchy:
+  - "nodes/%{::trusted.certname}"
+  - "common"

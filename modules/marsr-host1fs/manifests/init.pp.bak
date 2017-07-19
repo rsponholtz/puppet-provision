@@ -1,0 +1,72 @@
+# == Class: host1fs
+#
+# Full description of class host1fs here.
+#
+# === Parameters
+#
+# Document parameters here.
+#
+# [*sample_parameter*]
+#   Explanation of what this parameter affects and what it defaults to.
+#   e.g. "Specify one or more upstream ntp servers as an array."
+#
+# === Variables
+#
+# Here you should define a list of variables that this module would require.
+#
+# [*sample_variable*]
+#   Explanation of how this variable affects the funtion of this class and if
+#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
+#   External Node Classifier as a comma separated list of hostnames." (Note,
+#   global variables should be avoided in favor of class parameters as
+#   of Puppet 2.6.)
+#
+# === Examples
+#
+#  class { 'host1fs':
+#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#  }
+#
+# === Authors
+#
+# Author Name <author@domain.com>
+#
+# === Copyright
+#
+# Copyright 2017 Your name here, unless otherwise noted.
+#
+class marsr-host1fs {
+
+
+#include lvm
+#include sudoers  
+#include '::azure_agent'
+
+class { 'azure_agent':
+resourcedisk_enableswap => 'y',
+resourcedisk_swapsizemb=> '27000',
+}
+
+
+class { 'lvm':
+  volume_groups    => {
+    'myvg' => {
+      physical_volumes => [ '/dev/sdac', ],
+      logical_volumes  => {
+        'opt'    => {'size' => '20G'},
+        'tmp'    => {'size' => '1G' },
+        'usr'    => {'size' => '3G' },
+        'var'    => {'size' => '15G'},
+        'home'   => {'size' => '5G' },
+        'backup' => {
+          'size'              => '5G',
+          'mountpath'         => '/var/backups',
+          'mountpath_require' => true,
+        },
+      },
+    },
+  },
+}
+
+
+}

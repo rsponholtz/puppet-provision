@@ -1,0 +1,24 @@
+#
+# This file is managed by Puppet, do NOT edit!
+#
+
+# Static options not changed by Puppet.
+Role.StateConsumer=None 
+Role.ConfigurationConsumer=None 
+Role.TopologyConsumer=None
+
+# Variable options changed by Puppet.
+Provisioning.Enabled=<%= @provisioning_enabled %>
+Provisioning.DeleteRootPassword=<%= @provisioning_deleterootpassword %>
+Provisioning.RegenerateSshHostKeyPair=<%= @provisioning_regeneratesshhostkeypair %>
+Provisioning.SshHostKeyPairType=<%= @provisioning_sshhostkeypairtype %>
+Provisioning.MonitorHostName=<%= @provisioning_monitorhostname %>
+ResourceDisk.Format=<%= @resourcedisk_format %>
+ResourceDisk.Filesystem=<%= @resourcedisk_filesystem %>
+ResourceDisk.MountPoint=<%= @resourcedisk_mountpoint %> 
+ResourceDisk.EnableSwap=<%= @resourcedisk_enableswap %>
+ResourceDisk.SwapSizeMB=<%= @resourcedisk_swapsizemb %>
+LBProbeResponder=<%= @lbproberesponder %>
+Logs.Verbose=<%= @logs_verbose %>
+OS.RootDeviceScsiTimeout=<%= @os_rootdevicescsitimeout %>
+OS.OpensslPath=<%= @os_opensslpath %>

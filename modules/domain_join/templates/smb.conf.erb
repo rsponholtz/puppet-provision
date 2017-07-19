@@ -1,0 +1,9 @@
+[global]
+  workgroup = <%= @domain_shortname %>
+  client signing = yes
+  client use spnego = yes
+  kerberos method = secrets and keytab
+  log file = /var/log/samba/%m.log
+  realm = <%= @domain_fqdn %>
+  security = ads
+  <% if @disable_smbv1 %>min protocol = SMB2<%- end %>

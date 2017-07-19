@@ -1,0 +1,66 @@
+{
+  "name": "kemra102-azure_agent",
+  "version": "1.0.2",
+  "author": "Danny Roberts",
+  "summary": "Deploy and manage the Azure agent on Linux instances.",
+  "license": "BSD-2-Clause",
+  "source": "https://github.com/kemra102/puppet-azure_agent",
+  "project_page": "https://github.com/kemra102/puppet-azure_agent",
+  "issues_url": "https://github.com/kemra102/puppet-azure_agent/issues",
+  "tags": [
+    "azure",
+    "microsoft",
+    "cloud"
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04",
+        "14.10"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "11 SP3",
+        "12"
+      ]
+    },
+    {
+      "operatingsystem": "OpenSuSE",
+      "operatingsystemrelease": [
+        "13.1",
+        "13.2"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 3.2.0"}
+  ]
+}

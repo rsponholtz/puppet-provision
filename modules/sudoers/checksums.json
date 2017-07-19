@@ -1,0 +1,12 @@
+{
+  "README.md": "3e4bcd8021d421933147d61958e02ef2",
+  "manifests/config.pp": "ba65c48a11ed9f88c8c64164d6d361c0",
+  "manifests/init.pp": "4b305a3eb389dd687e3d18d47fcdb01e",
+  "manifests/install.pp": "1049d660579f8ab2e8efa105094eaf8b",
+  "manifests/modconfig.pp": "0d200d7a0eb75f2cff9165a763ccc0bb",
+  "manifests/params.pp": "dc330425464985ba73761209107a6c4a",
+  "manifests/userrule.pp": "75f2f75d1ec021fb635408a961235ac3",
+  "metadata.json": "53049b3eeb222c2fcc25c4f4d1f5c45c",
+  "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
+  "tests/init.pp": "d16f0e4b36c05a9de7b059623e8ea3f2"
+}

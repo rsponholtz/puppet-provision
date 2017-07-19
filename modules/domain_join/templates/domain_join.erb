@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+usage()
+{
+cat << EOF
+usage: $0 options
+
+This script joins and removes the current machine from active directory.
+
+OPTIONS:
+   -h      Show this message
+   -j      Join this host to the configured domain
+   -l      Leave the configured domain
+   -q      Query if the host has been joined to the domain
+           If confiured but the sssd service is stopped, will attempt to rejoin
+EOF
+}
+
+while getopts "hjlq" OPTION
+do
+  case $OPTION in
+    h)
+      usage
+      exit 0
+      ;;
+    j)
+      SCRIPT_ACTION="join"
+      ;;
+    l)
+      SCRIPT_ACTION="leave"
+      ;;
+    q)
+      SCRIPT_ACTION="query"
+      ;;
+    ?)
+      usage
+      exit
+      ;;
+  esac
+done
+
+#require at least one option
+if [ $# -le 0 ]; then
+  usage
+  exit
+fi
+
+register_account='<%= @register_account %>'
+register_password='<%= @register_password %>'
+<%- if @createcomputer then -%>container_ou='<%= @createcomputer %>'<%- end -%>
+
+if [[ -z "${container_ou// }" ]] ; then
+  echo "Unable to query without setting an OU. Puppet class variable 'createcomputer' was undef." 1>&2
+  exit 1
+fi
+
+function restart_sshd {
+  <%- case @operatingsystemmajrelease
+  when "6" -%>
+  /etc/init.d/sshd restart
+  <%- when "7" -%>
+  systemctl restart sshd.service
+  <%- end -%>
+}
+
+function restart_sssd {
+  <%- case @operatingsystemmajrelease
+  when "6" -%>
+  /etc/init.d/sssd restart
+  <%- when "7" -%>
+  systemctl restart sssd.service
+  <%- end -%>
+}
+
+function stop_sssd {
+  <%- case @operatingsystemmajrelease
+  when "6" -%>
+  /etc/init.d/sssd stop
+  <%- when "7" -%>
+  systemctl stop sssd.service
+  <%- end -%>
+} 
+
+function join {
+  echo $register_password | kinit $register_account
+  net ads join -U ${register_account}%${register_password} -k <%- if @createcomputer then %>createcomputer="$container_ou"<%- end %> | grep Joined && JOIN_SUCCESS=true || JOIN_SUCCESS=false
+  if [ $JOIN_SUCCESS = "false" ]; then
+    echo "ERROR: failed to join the domain" >&2
+    exit 1
+  fi
+
+  <%-  if @manage_dns %>
+  /usr/bin/net ads dns register
+    <%- if @create_ptr then %>
+  # Grab the IP of the specified interface, reverses it, adds .in-addr-arpa and send to AD DSN with nsupdate
+  # The -g flag is to support kerberos
+  echo -e "update add `ip -h -4 addr show <%= @interface %> | grep -Po 'inet \K[\d.]+' | awk 'BEGIN{FS="."}{print $4"."$3"."$2"."$1".in-addr.arpa"}'` 3600 PTR `hostname -f`.\nsend" | nsupdate -g
+  klist -k
+    <%- end %>
+  <%- end %>
+  authconfig --update --enablesssd  --enablerfc2307bis --enablesssdauth --enablemkhomedir
+  chmod 0600 /etc/sssd/sssd.conf
+  restart_sssd
+  restart_sshd
+}
+
+function is_service_running {
+  <%- case @operatingsystemmajrelease
+  when "6" -%>
+  /etc/init.d/sssd status
+  <%- when "7" -%>
+  systemctl status sssd.service
+  <%- end -%>
+  SSSD_STATUS=$?
+  [ "$SSSD_STATUS" == '0' ] && return 0 || return 1
+}
+
+
+function is_joined_to_domain {
+  upper_host=<%= @hostname.upcase %>
+  net ads dn "CN=${upper_host},OU=${container_ou},<%= 'DC=' + @domain_fqdn.split('.').join(',DC=') %>" -U ${register_account}%${register_password}
+  EXIT_CODE=$?
+  [ "$EXIT_CODE" == '0' ] && return 0 || return 1
+}
+
+#If host is already joined, but sssd is stopped, assume this is a new VM and the previous host wasn't cleaned up.
+#This should enable the sssd service to start
+function force_add_if_sssd_service_broken {
+  is_service_running
+  _service_running=$?
+  if [ "$_service_running" == '1' ]; then
+    echo "sssd was stopped but VM was joined to the domain.  Assuming from a previous VM that wasn't cleaned up.  Re-joining."
+    join
+  fi
+}
+
+function leave {
+  rm -rf /etc/krb5.keytab #even if the net ads leave fails removing this keytab removes logins.
+  net ads leave -U ${register_account}%${register_password} | grep Deleted && SUCCESS=true || SUCCESS=false
+  if [ $SUCCESS = "false" ]; then
+    echo "ERROR: failed to leave the domain" >&2
+    exit 1
+  else
+    stop_sssd
+    restart_sshd
+    exit 0
+  fi
+}
+
+#TODO: joining on an idempotency/query is an odd side effect. Best way to remove?
+function query {
+  is_joined_to_domain
+  _is_joined_to_domain=$?
+  if [ $_is_joined_to_domain = 0 ]; then
+    echo "${upper_host} is joined to the domain"
+    #TODO only force if a shell flag is given?
+    #force_add_if_sssd_service_broken
+    exit 0
+  else
+    echo "${upper_host} is not joined to the domain, or service account has lost access"
+    exit 1
+  fi
+}
+
+#Run the specified command
+${SCRIPT_ACTION}

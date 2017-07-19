@@ -1,0 +1,8 @@
+---
+# Default key/value pairs
+domain_join::domain_fqdn: 'example.com'
+domain_join::domain_shortname: 'example'
+domain_join::ad_dns:
+  - '1.2.3.4'
+domain_join::register_account: 'Administrator'
+domain_join::register_password: 'password'

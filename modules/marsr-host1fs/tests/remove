@@ -1,0 +1,3 @@
+swapoff /dev/dm-0
+vgremove vg_page
+vgremove vg_apps

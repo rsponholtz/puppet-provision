@@ -1,0 +1,14 @@
+{
+  "CHANGELOG": "12bdfe04d7d47a8902c47bb02ecb494c",
+  "Gemfile": "652343d99a0136b104adf5fd4b8eb3b5",
+  "LICENSE": "81f88e200c4d8e95ca3ec47160c209ac",
+  "README.md": "86ca5e430e7b4690742e1b80faad5eba",
+  "Rakefile": "9fb4cf03385178fbf8171aa4f4051d53",
+  "manifests/init.pp": "2353ab206c9b84b018bbdd3df229d7c1",
+  "manifests/params.pp": "ac383a87d0170a912401ea6fd5b17d96",
+  "metadata.json": "2c9dbd69a9e7b70fad00a87e373f9e6a",
+  "spec/classes/init_spec.rb": "b437cbdab59962c85f5f4726ba159f48",
+  "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
+  "templates/waagent.conf.erb": "7169a5c403f28a9a4398764d78df2732",
+  "tests/init.pp": "4fc4d0f2cda758de04df3969ad61f449"
+}
